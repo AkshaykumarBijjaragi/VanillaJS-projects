@@ -31,6 +31,7 @@ amount1.addEventListener("input", calculate);
 
 //swapping logic below
 swapButton.addEventListener("click", function () {
+  //currency.value returns the code of currency from dropdown not the exchange currency value
   const temp = currency1.value;
   currency1.value = currency2.value;
   currency2.value = temp;
