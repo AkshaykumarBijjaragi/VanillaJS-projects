@@ -9,6 +9,7 @@ const sortNameBtn = document.getElementById("sortName");
 const wealthBtn = document.getElementById("calculate-wealth");
 
 let data = [];
+let totalWealthClicked = false;
 
 //format the money
 function formatMoney(number) {
@@ -30,10 +31,12 @@ function updateUI(providedData = data) {
     elem.innerHTML = `<strong>${item.name}</strong> ${formatMoney(item.money)}`;
     mainTable.appendChild(elem);
   });
+  if (data && totalWealthClicked) {
+    calculateSum();
+  }
 }
 
 //request to API to generate random user
-
 async function generateUser() {
   try {
     const res = await fetch("https://randomuser.me/api");
@@ -57,11 +60,9 @@ async function generateUser() {
 
 //function to double the money
 function doubleMoney() {
-  console.log(data);
   data = data.map((item) => {
     return { name: item.name, money: item.money * 2 };
   });
-  console.log(data);
   updateUI(data);
 }
 
@@ -79,19 +80,15 @@ function onlyMillionairesData() {
 
 //sorting by wealth of the people
 function sortByMoney() {
-  console.log(data);
   data = data.sort((a, b) => b.money - a.money);
-  console.log(data);
   updateUI();
 }
 
 //sorting by name
 function sortName() {
-  console.log(data, "hi");
   data = data.sort((a, b) =>
     a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
   );
-  console.log(data);
   updateUI();
 }
 
@@ -109,6 +106,7 @@ function calculateSum() {
   }
 
   sumRow.innerHTML = `<h2><strong>Total wealth</strong> ${totalMoney}</h2>`;
+  totalWealthClicked = true;
 }
 
 //all event listeners
